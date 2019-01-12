@@ -1,0 +1,48 @@
+html, body
+  width 100%
+  height 100%
+
+html, body, div
+  margin 0
+  padding 0
+  font-family SourceHanSansCN;
+
+color-1 = #95EDFF
+color-2 = #ffffff
+
+.title-font-normal
+  font-size 16px
+  line-height 16px
+  color color-2
+.title-font-big
+  font-size 16px
+  line-height 16px
+  color color-1
+.content-font-normal
+  font-size 15px
+  color: color-2
+  font-weight: 300
+.content-font-normal-color
+  font-size 15px
+  color: color-1
+.content-font-big
+  font-size: 21px
+  color: color-1
+
+
+[aspectratio]
+  position relative
+[aspectratio]::before
+  content ''
+  display block
+  width 1px
+  margin-left -1px
+  height 0
+[aspectratio-content]
+  position absolute
+  top 0
+  left 0
+  right 0
+  bottom 0
+  width 100%
+  height 100%
