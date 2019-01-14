@@ -3,13 +3,12 @@
     <div>
       <content-list></content-list>
     </div>
-    <!-- <home-page v-show="!isShow" @view="showReport"></home-page> -->
   </div>
 </template>
 
 <script>
 import ContentList from './ContentList'
-import HomePage from './HomePage'
+
 import { ajax } from '@/utils/http.js'
 import { formatMyDate } from '@/utils/tool.js'
 import { getUserInfo } from '@/utils/webView.js'
@@ -20,12 +19,10 @@ export default {
   name: 'index',
   data() {
     return {
-      isShow: false
     }
   },
   components: {
     ContentList,
-    HomePage,
   },
   created() {
     // getUserInfo().then( res => {
@@ -37,9 +34,7 @@ export default {
     this.getData()
   },
   methods: {
-    showReport() {
-      this.isShow = true
-    },
+
     getData( token ) {
       ajax( 'https://git.lctest.cn:8001/api/admin2/doctor/user/stat', {
         token: 'awpB/zbFiCA2DYLzxRwQbz50pnhgW7koz2ae6vJJ/W+G8JadjlKhZf/kDhNP0U91'

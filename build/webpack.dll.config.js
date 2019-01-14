@@ -7,7 +7,8 @@ const utils = require('./utils')
 const webpackConfig = {
     entry: {
         vendor1: ['vue/dist/vue.esm.js'],
-        vendor2: ['vue-router', 'vuex', 'axios', 'vue-lazyload']
+        vendor2: ['vue-lazyload'],
+        vendor3: ['vue-awesome-swiper']
     },
     output: {
         path: config.build.dllRoot,

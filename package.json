@@ -13,7 +13,7 @@
         "lint": "eslint --ext .js,.vue src test/unit test/e2e/specs",
         "build": "node build/build.js",
         "log": "webpack --config ./build/webpack.dev.conf.js --colors --profile --display-modules",
-        "dll": "webpack --config ./build/webpack.dll.config.js --progress "
+        "dll": "rm -rf ./dll&&webpack --config build/webpack.dll.config.js --progress "
     },
     "dependencies": {
         "glob": "^7.1.3",
@@ -106,7 +106,8 @@
         "vue-template-compiler": "^2.5.2",
         "webpack": "^3.12.0",
         "webpack-bundle-analyzer": "^2.9.0",
-        "webpack-dev-server": "^3.1.11",
+        "webpack-cli": "^3.2.1",
+        "webpack-dev-server": "^2.9.1",
         "webpack-merge": "^4.1.0"
     },
     "engines": {

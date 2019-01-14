@@ -1,6 +1,6 @@
 <template>
   <div class="final-item">
-    <content-wrap>
+    <content-wrap :show-footer="false">
       <div class="assist-text" slot="assist">和辛勤的</div>
       <div slot="title">说声辛苦了</div>
       <div class="final-item-content">
@@ -14,6 +14,9 @@
         <div class="download-tip">下载e看牙App，查看我的报告</div>
       </div>
     </content-wrap>
+    <div class="home-btn" @click="shareReport" v-if="isShowBtn">
+      <span>分享我的报告</span>
+    </div>
   </div>
 </template>
 
@@ -25,11 +28,20 @@ export default {
     return {
       watchCount: 0,
       studyCount: 0,
-      qrCode: '/static/images/qrcode.png'
+      qrCode: '/static/images/qrcode.png',
+      isShowBtn: false
     }
   },
   components: {
     ContentWrap
+  },
+  mounted() {
+    this.isShowBtn = false
+  },
+  methods: {
+    shareReport() {
+
+    }
   }
 }
 </script>
@@ -37,7 +49,8 @@ export default {
 <style lang="stylus" scoped>
 
 .final-item
-  // margin-top 20px
+  display flex
+  justify-content center
   .final-item-content
     margin-top 20px
     text-align center
@@ -56,14 +69,27 @@ export default {
     font-size 8px
     color #ffffff
     -webkit-transform scale(0.67)
-
+.home-btn
+  position absolute
+  bottom 41px
+  width 141px
+  height 45px
+  background-image url('/static/images/btnBg.png')
+  background-size cover
+  display flex
+  align-items center
+  justify-content center
+  span
+    color #ffffff
+    font-size 15px
+    line-height 15px
 </style>
 <style lang="stylus" >
 top_distance = 15
 .final-item
   .content-position
-    top 123px + top_distance !important
-    height 341px + top_distance !important
+    top 0px + top_distance !important
+    height 344px - top_distance !important
 </style>
 
 

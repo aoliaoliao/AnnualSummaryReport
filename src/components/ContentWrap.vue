@@ -1,12 +1,14 @@
 <template>
   <div class="content-wrap">
-    <div aspectratio w-375-540 class="content-wrap-body" ref="wrapBody">
-      <img aspectratio-content v-lazy="contentImg">
+    <div class="title">
+      <img v-lazy="titleImg">
+    </div>
+    <div class="content-wrap-body" ref="wrapBody">
+      <img v-lazy="contentImg">
       <div class="content-item content-position">
         <div class="item-title title-font-normal">
           <span class="title-year">2018</span>
-          <slot name="assist">
-          </slot>
+          <slot name="assist"></slot>
           <span class="title-name">{{userName}}</span>
           <slot name="title"></slot>
         </div>
@@ -17,7 +19,7 @@
         </div>
       </div>
     </div>
-    <div class="content-footer">
+    <div class="content-footer" v-if="showFooter">
       <lc-footer></lc-footer>
     </div>
 
@@ -30,9 +32,16 @@ import LcFooter from './LcFooter'
 
 export default {
   name: 'content-wrap',
+  props: {
+    showFooter: {
+      type: Boolean,
+      default: true
+    }
+  },
   data() {
     return {
-      contentImg: '/static/images/content.png',
+      contentImg: '/static/images/contentBg.png',
+      titleImg: '/static/images/title.png',
       userName: 'e看牙用户'
     }
   },
@@ -43,26 +52,16 @@ export default {
     EventBus.$on( 'name', target => {
       this.userName = target.name
     } );
-    this.$nextTick( this.adjustWrapBody )
   },
   methods: {
-    adjustWrapBody() {
-      // window.alert( `${document.body.clientWidth} - ${document.body.clientHeight}` )
-      const standard = 375 / 667
-      const local = document.body.clientWidth / document.body.clientHeight
-
-      if ( standard < local ) {
-        const ratio = document.body.clientHeight / 667
-        const translateY = 540 - ( 540 * ratio )
-        this.$refs[ 'wrapBody' ].style.transform = `scale(${ratio}) translateY( ${-translateY / 2}px)`
-      }
-    }
   }
 }
 </script>
 
 <style lang="stylus" scoped>
 top_distance = 36px
+content_W = 321px
+content_H = 344px
 
 flex-layout()
   display flex
@@ -74,19 +73,33 @@ flex-layout()
   width 100%
   height 100%
   position relative
-  // display flex
-  // flex-direction column
-  // justify-content space-between
+  background-image url('/static/images/wrapBg.jpg')
+  background-size cover
+  flex-layout()
+.title
+  padding-top 32px
+  text-align center
+  width 312px
+  // height 65px
+  img
+    width 100%
+    height 100%
+
 .content-wrap-body
   // margin-top top_distance
   position relative
-  width 375px
+  margin-top 14px
+  width content_W
+  height content_H
+  img
+    width content_W
+    height content_H
   .content-position
     position absolute
-    left 31px
-    top 123px + top_distance
-    width 319px
-    height 341px - top_distance
+    left 0
+    top 0px + top_distance
+    width content_W
+    height content_H - top_distance
   .content-item
     overflow hidden
     flex-layout()

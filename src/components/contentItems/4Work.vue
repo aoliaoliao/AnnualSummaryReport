@@ -17,10 +17,10 @@
         <div class="content-font-big ">
           {{workLastDate}}
         </div>
-        <div class="content-font-normal">
+        <div class="content-font-normal" v-if="workLateDays > 0">
           TA工作到很晚
         </div>
-        <div class="content-font-normal">
+        <div class="content-font-normal" v-if="workLateDays > 0">
           <span class="content-font-big">{{workLastMinute}}</span>分，您还在{{workLastOperation}}
         </div>
       </div>

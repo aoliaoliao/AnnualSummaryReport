@@ -1,7 +1,7 @@
 <template>
   <div class="first-treat">
     <content-wrap>
-      <div slot="title">
+      <div class="clinic-name" slot="title">
         在
         <span class="title-font-big">{{clinic}}</span>
         工作
@@ -44,5 +44,7 @@ export default {
     text-align center
   .time
     margin-bottom 22px
+  .clinic-name
+    text-align center
 </style>
 

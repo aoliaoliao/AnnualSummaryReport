@@ -12,11 +12,16 @@
           <span class="content-font-big">{{workHours}}</span>
           小时
         </div>
-        <div class="content-font-normal content-margin" v-if="skilledItems.length > 0">
+        <div class="content-font-normal content-margin">
           您擅长的项目有：
         </div>
-        <div class="content-font-normal" v-for="item in skilledItems" :key="item.name">
-          {{item.name}}（{{item.count}}）
+        <template v-if="skilledItems.length > 0">
+          <div class="content-font-normal" v-for="item in skilledItems" :key="item.name">
+            {{item.name}}（{{item.count}}）
+          </div>
+        </template>
+        <div class="content-font-normal" v-else>
+          小e没有检测到...
         </div>
       </div>
     </content-wrap>

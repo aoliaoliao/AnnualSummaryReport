@@ -126,6 +126,14 @@ const webpackConfig = merge(baseWebpackConfig, {
             minChunks: 3
         }),
 
+        new AddAssetHtmlPlugin([{
+            filepath: utils.dllPath('*.js'),
+            hash: true,
+            publicPath: utils.assetsPath('/dll'),
+            outputPath: utils.assetsPath('/dll'),
+            includeSourcemap: false
+        }]),
+
         ...createDllReferencePlugin(),
 
         // copy custom static assets
