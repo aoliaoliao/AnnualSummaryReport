@@ -1,7 +1,7 @@
 <template>
   <div class="footer">
     <div class="footer-img">
-      <img v-lazy="logoImg">
+      <img :src="logoImg">
     </div>
     <div class="footer-slogn">
       <div>＃门诊管理，连锁经营，品牌塑造，智能营销，e看牙更好＃</div>

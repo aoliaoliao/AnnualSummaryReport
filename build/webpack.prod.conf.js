@@ -85,12 +85,6 @@ const webpackConfig = merge(baseWebpackConfig, {
             chunksSortMode: 'dependency',
             // inlineSource: '/site/(.)+.js$'
         }),
-        new AddAssetHtmlPlugin([{
-            filepath: utils.dllPath('*.js'),
-            hash: true,
-            publicPath: '/',
-            includeSourcemap: false
-        }]),
         // new HtmlWebpackInlineSourcePlugin(),
         // keep module.id stable when vendor modules does not change
         new webpack.HashedModuleIdsPlugin(),

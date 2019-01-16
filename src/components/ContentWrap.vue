@@ -1,15 +1,16 @@
 <template>
   <div class="content-wrap">
     <div class="title">
-      <img v-lazy="titleImg">
+      <img :src="titleImg">
     </div>
     <div class="content-wrap-body" ref="wrapBody">
-      <img v-lazy="contentImg">
+      <img :src="contentImg">
       <div class="content-item content-position">
         <div class="item-title title-font-normal">
           <span class="title-year">2018</span>
-          <slot name="assist"></slot>
-          <span class="title-name">{{userName}}</span>
+          <slot name="assist">
+            <span class="title-name">{{userName}}</span>
+          </slot>
           <slot name="title"></slot>
         </div>
         <div class="split-line">
@@ -42,7 +43,7 @@ export default {
     return {
       contentImg: '/static/images/contentBg.png',
       titleImg: '/static/images/title.png',
-      userName: 'e看牙用户'
+      userName: ''
     }
   },
   components: {
@@ -92,8 +93,8 @@ flex-layout()
   width content_W
   height content_H
   img
-    width content_W
-    height content_H
+    width 100%
+    height 100%
   .content-position
     position absolute
     left 0

@@ -37,7 +37,7 @@ export default {
       likeCount: 0,
       commentCount: 0,
       followCount: 0,
-      caseCount: 0
+      caseCount: 0,
     }
   },
   components: {

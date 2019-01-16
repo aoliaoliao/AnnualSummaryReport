@@ -24,12 +24,12 @@ function isInWeixin() {
 }
 
 function isInEkyApp() {
-  // queryParam = getQueryParam()
   if ( window.iosBridge || window.androidBridge ) {
     return true
   }
   return false
 }
+
 
 function osIsPC() {
   let userAgentInfo = navigator.userAgent
@@ -57,31 +57,31 @@ function getHrefSearch() {
  * 获取用户配置信息
  */
 function callGetUserData() {
-  try {
-    window.userConfig = {
-      Authorization: '',
-    } // for code tip
+  return new Promise( ( resolve ) => {
+    function setUserConfig( conf ) {
+      if ( conf ) {
+        window.userConfig = JSON.parse( conf )
+      }
+      resolve()
+    }
     window.userConfig = null
     if ( osIsIOS() && iosBridge ) {
       // getUserData 是 app端提供给js 调用的函数
-      iosBridge.callHandler( 'getUserData', ( responseData ) => {
-        let userData = responseData
-        if ( userData ) {
-          window.userConfig = JSON.parse( userData )
-        }
+      iosBridge.callHandler( 'getUserData', ( userData ) => {
+        setUserConfig( userData )
       } )
     } else if ( osIsAndroid() && androidBridge && androidBridge.getUserData ) {
       // getUserData 是 app端提供给js 调用的函数
       let userData = androidBridge.getUserData()
-      if ( userData ) {
-        window.userConfig = JSON.parse( userData )
-      }
+      setUserConfig( userData )
     } else if ( isInWeixin() ) {
-      window.userConfig = getHrefSearch()
+      let userData = getHrefSearch()
+      setUserConfig( userData )
+    } else {
+      setUserConfig()
     }
-  } catch ( e ) {
-    console.log( e )
-  }
+  } )
+
 }
 
 
@@ -129,6 +129,7 @@ function callJsFunction() {
 
 
 function getUserInfo() {
+
   return new Promise( ( resolve, reject ) => {
     function validate() {
       if ( window.userConfig ) {
@@ -139,8 +140,7 @@ function getUserInfo() {
     }
     if ( osIsAndroid() ) {
       setAndroidWebViewJavascriptBridge( () => {
-        callGetUserData()
-        validate()
+        callGetUserData().then( validate )
       } )
     } else if ( osIsIOS() ) {
       setupWebViewJavascriptBridge( ( bridge ) => {
@@ -148,19 +148,18 @@ function getUserInfo() {
         window.iosBridge = iosBridge
         // app需要的调用js函数需要在此注册（only for iOS）
         bridge.registerHandler( 'callJsFunction', callJsFunction )
-        callGetUserData()
-        validate()
+        callGetUserData().then( validate )
       } )
     } else {
-      callGetUserData()
-      validate()
+      callGetUserData().then( validate )
     }
   } )
 }
+
 
 export {
   getUserInfo,
   isInWeixin,
   osIsPC,
-  isInEkyApp
+  isInEkyApp,
 }

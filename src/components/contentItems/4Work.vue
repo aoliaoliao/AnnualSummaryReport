@@ -9,20 +9,24 @@
       <div class="work-content">
         <div class="content-font-normal">
           有
-          <span class="content-font-big">{{workLateDays}}</span>天，晚上8点到凌晨5点间，
+          <span class="content-font-big">{{workLateDays}}</span>
+          天，晚上8点到凌晨5点间，
         </div>
         <div class="content-font-normal ">
           TA还在e看牙处理工作；
         </div>
-        <div class="content-font-big ">
-          {{workLastDate}}
-        </div>
-        <div class="content-font-normal" v-if="workLateDays > 0">
-          TA工作到很晚
-        </div>
-        <div class="content-font-normal" v-if="workLateDays > 0">
-          <span class="content-font-big">{{workLastMinute}}</span>分，您还在{{workLastOperation}}
-        </div>
+        <template v-if="workLateDays > 0">
+          <div class="content-font-big ">
+            {{workLastDate}}
+          </div>
+          <div class="content-font-normal">
+            TA工作到很晚
+          </div>
+          <div class="content-font-normal">
+            <span class="content-font-big">{{workLastMinute}}</span>分，您还在{{workLastOperation}}
+          </div>
+        </template>
+
       </div>
     </content-wrap>
   </div>
@@ -45,14 +49,16 @@ export default {
   computed: {
     workLastDate() {
       if ( this.workLastTime ) {
-        return formatMyDate( this.workLastTime, 'yyyy.MM.dd' )
+        const tmp = this.workLastTime.replace( /-/g, '/' )
+        return formatMyDate( tmp, 'yyyy.MM.dd' )
       } else {
         return ''
       }
     },
     workLastMinute() {
       if ( this.workLastTime ) {
-        return formatMyDate( this.workLastTime, 'mm' )
+        const tmp = this.workLastTime.replace( /-/g, '/' )
+        return formatMyDate( tmp, 'mm' )
       } else {
         return ''
       }

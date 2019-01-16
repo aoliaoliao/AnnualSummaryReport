@@ -2,10 +2,12 @@
   <div class="home-page">
     <!-- <img class=""> -->
     <div class="user-info">
-      <img v-lazy="avatar">
-      <span>用户昵称</span>
+      <img :src="avatar">
+      <span>{{name}}</span>
     </div>
-    <img class="content-img" src="/static/images/homeContent.png" />
+    <div class="content-img">
+      <img src="/static/images/homeContent.png" />
+    </div>
     <div class="home-btn" @click="viewReport">
       <span>查看TA的报告</span>
     </div>
@@ -19,16 +21,22 @@ export default {
   name: 'w-home-page',
   data() {
     return {
-      avatar: '/static/images/logo.png'
+      avatar: '',
+      gender: '',
+      name: ''
     }
   },
   created() {
-
+    EventBus.$on( 'user', ( user ) => {
+      this.avatar = user.avatar || '/static/images/avatar.png'
+      this.gender = user.gender
+      this.name = user.name
+    } )
   },
   methods: {
     viewReport() {
       // this.$emit( 'view' )
-      EventBus.$emit('view')
+      EventBus.$emit( 'view' )
     }
   }
 }
@@ -42,9 +50,13 @@ export default {
   background-size cover
   text-align center
 .content-img
-  margin-top 12px
+  // margin-top 12px
+  margin 12px auto 0
   width 288px
   height 384px
+  img
+    width 100%
+    height 100%
 .user-info
   padding-top 13px
   display flex

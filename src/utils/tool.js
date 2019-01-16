@@ -6,6 +6,7 @@ export const formatMyDate = ( date, str = 'yyyy-MM-dd hh:mm:ss', isEnd = false )
     date = new Date( date )
   }
   if ( date.toString() == 'Invalid Date' ) { return '' }
+
   if ( isEnd ) {
     date.setHours( 0 )
     date.setMinutes( 0 )

@@ -1,26 +1,29 @@
 <template>
   <div class="home-page stop-swiping">
     <!-- <w-home-page></w-home-page> -->
-    <a-home-page></a-home-page>
+    <a-home-page v-if="isInAPP"></a-home-page>
+    <w-home-page v-else></w-home-page>
   </div>
 </template>
 
 <script>
 import WHomePage from './homePages/WHomePage'
 import AHomePage from './homePages/AHomePage'
+import { isInEkyApp } from '@/utils/webView'
 
 export default {
   data() {
     return {
-      avatar: '/static/images/logo.png'
+      avatar: '/static/images/logo.png',
+      isInAPP: true
     }
   },
   components: {
     WHomePage,
     AHomePage
   },
-  created() {
-
+  mounted() {
+    this.isInAPP = isInEkyApp()
   },
   methods: {
   }

@@ -3,7 +3,7 @@
     <content-wrap>
       <div class="clinic-name" slot="title">
         在
-        <span class="title-font-big">{{clinic}}</span>
+        <span class="title-font-big">{{clinicsName}}</span>
         工作
       </div>
       <div class="first-treat-content">
@@ -11,6 +11,7 @@
         <div class="content-font-normal">是TA首次在e看牙接诊的时间</div>
       </div>
     </content-wrap>
+
   </div>
 </template>
 
@@ -21,18 +22,25 @@ import { EventBus } from '@/utils/data.js'
 export default {
   data() {
     return {
-      clinic: '',
+      clinics: [],
       firstTreatDate: '',
     }
   },
   components: {
     ContentWrap
   },
-  created() {
+  computed: {
+    clinicsName() {
+      let name = this.clinics.join( '，' )
+      return name
+    }
+  },
+  mounted() {
     EventBus.$on( 'firsttreat', target => {
-      this.clinic = target.clinic
+      this.clinics = target.clinics
       this.firstTreatDate = target.firstTreatDate
     } );
+
   }
 }
 </script>
@@ -46,5 +54,6 @@ export default {
     margin-bottom 22px
   .clinic-name
     text-align center
+    margin 0 10px
 </style>
 

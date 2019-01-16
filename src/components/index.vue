@@ -1,7 +1,14 @@
 <template>
   <div class="index">
-    <div>
+    <div v-if="!isLoading">
       <content-list></content-list>
+    </div>
+    <div class="loading-wrap" v-else>
+      <div class="ball-pulse-sync">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
     </div>
   </div>
 </template>
@@ -19,38 +26,55 @@ export default {
   name: 'index',
   data() {
     return {
+      isLoading: true,
+      msg: ''
     }
   },
   components: {
-    ContentList,
+    ContentList
   },
   created() {
-    // getUserInfo().then( res => {
-    //   getData( res.token )
-    // } ).catch( err => {
-    //   getData( err.token )
-    // } )
 
-    this.getData()
+  },
+  mounted() {
+    getUserInfo().then( res => {
+      this.getData( res.token )
+    } ).catch( err => {
+      this.getData()
+    } )
+    // this.getData()
   },
   methods: {
-
     getData( token ) {
+      this.isLoading = true
       ajax( 'https://git.lctest.cn:8001/api/admin2/doctor/user/stat', {
         token: 'awpB/zbFiCA2DYLzxRwQbz50pnhgW7koz2ae6vJJ/W+G8JadjlKhZf/kDhNP0U91'
       } ).then( res => {
-        const { data = {} } = JSON.parse( res )
-        this.formatName( data )
-        this.formatFirstTreat( data )
-        this.formatPatient( data )
-        this.formatConsultation( data )
-        this.formatWork( data )
-        this.formatBbs( data )
-        this.formatTrain( data )
-
+        this.isLoading = false
+        this.$nextTick( () => {
+          const { data = {} } = JSON.parse( res )
+          this.formatUser( data )
+          this.formatName( data )
+          this.formatFirstTreat( data )
+          this.formatPatient( data )
+          this.formatConsultation( data )
+          this.formatWork( data )
+          this.formatBbs( data )
+          this.formatTrain( data )
+        } )
       } ).catch( err => {
         // 获取数据错误
+        this.isLoading = false
         console.log( '获取数据错误', err )
+      } )
+    },
+    formatUser( res ) {
+      const { user = {}, saas = {} } = res
+      const { avatar = '', gender } = user
+      EventBus.$emit( 'user', {
+        avatar,
+        gender,
+        name: saas.name || ''
       } )
     },
     formatName( res ) {
@@ -62,29 +86,44 @@ export default {
     },
     formatFirstTreat( res ) {
       const { saas = {} } = res
-      const { clinic = '', firstTreatDate = '' } = saas
-      EventBus.$emit( 'firsttreat', {
-        clinic,
-        firstTreatDate: this.formatDate( firstTreatDate )
-      } )
+      const { clinics = [], firstTreatDate = '' } = saas
+
+      if ( clinics.length > 0 || firstTreatDate ) {
+        EventBus.$emit( 'firsttreat', {
+          clinics,
+          firstTreatDate: this.formatDate( firstTreatDate )
+        } )
+      } else {
+        EventBus.$emit( 'hidden', 0 )
+      }
     },
     formatPatient( res ) {
       const { saas = {} } = res
       const { treatmentCompletedCount = 0, maleCount = 0, femaleCount = 0, patientAgeRanges = [] } = saas
+
+      if ( treatmentCompletedCount === 0 ) {
+        EventBus.$emit( 'hidden', 1 )
+        return
+      }
 
       patientAgeRanges.forEach( ( v, index ) => {
         originData.saas.patientAgeRanges[ index ].count = v.count
       } )
       EventBus.$emit( 'patient', {
         treatmentCompletedCount,
-        maleCount,
-        femaleCount,
+        maleCount: 1,
+        femaleCount: Number( femaleCount / maleCount ).toFixed( 1 ),
         patientAgeRanges: originData.saas.patientAgeRanges
       } )
     },
     formatConsultation( res ) {
       const { saas = {} } = res
       const { patientCount = 0, workHours = 0, skilledItems = [] } = saas
+
+      if ( patientCount === 0 ) {
+        EventBus.$emit( 'hidden', 2 )
+        return
+      }
 
       EventBus.$emit( 'consultation', {
         patientCount,
@@ -96,6 +135,11 @@ export default {
       const { saas = {} } = res
       const { treatmentCompletedDays = 0, workLateDays = 0, workLastTime = '', workLastOperation = '' } = saas
 
+      if ( treatmentCompletedDays === 0 ) {
+        EventBus.$emit( 'hidden', 3 )
+        return
+      }
+
       EventBus.$emit( 'work', {
         treatmentCompletedDays,
         workLateDays,
@@ -105,6 +149,12 @@ export default {
     },
     formatBbs( res ) {
       const { bbs = {} } = res
+
+      if ( Object.keys( bbs ) === 0 || Object.values( bbs ).every( v => v === 0 ) ) {
+        EventBus.$emit( 'hidden', 4 )
+        return
+      }
+
       EventBus.$emit( 'bbs', {
         ...originData.bbs,
         ...bbs
@@ -112,15 +162,16 @@ export default {
     },
     formatTrain( res ) {
       const { train = {} } = res
+
+      if ( Object.keys( train ) === 0 || Object.values( train ).every( v => v === 0 ) ) {
+        EventBus.$emit( 'hidden', 5 )
+        return
+      }
       EventBus.$emit( 'train', {
         ...originData.train,
         ...train
       } )
     },
-
-
-
-
     formatDate( date ) {
       if ( !date ) return ''
       return formatMyDate( date )
@@ -131,11 +182,61 @@ export default {
 
 <style lang="stylus" scoped>
 .index
-  background #ffffff
+  background #ccc
   overflow hidden
   width 100%
   height 100%
-
-
 </style>
 
+<style>
+.loading-wrap {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.ball-pulse-sync {
+  text-align: center;
+}
+.ball-pulse-sync > div {
+  background-color: #fff;
+  width: 15px;
+  height: 15px;
+  border-radius: 100%;
+  margin: 2px;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  display: inline-block;
+}
+
+.ball-pulse-sync > div:nth-child(1) {
+  -webkit-animation: ball-pulse-sync 0.6s -0.14s infinite ease-in-out;
+  animation: ball-pulse-sync 0.6s -0.14s infinite ease-in-out;
+}
+
+.ball-pulse-sync > div:nth-child(2) {
+  -webkit-animation: ball-pulse-sync 0.6s -0.07s infinite ease-in-out;
+  animation: ball-pulse-sync 0.6s -0.07s infinite ease-in-out;
+}
+
+.ball-pulse-sync > div:nth-child(3) {
+  -webkit-animation: ball-pulse-sync 0.6s 0s infinite ease-in-out;
+  animation: ball-pulse-sync 0.6s 0s infinite ease-in-out;
+}
+
+@keyframes ball-pulse-sync {
+  33% {
+    -webkit-transform: translateY(10px);
+    transform: translateY(10px);
+  }
+  66% {
+    -webkit-transform: translateY(-10px);
+    transform: translateY(-10px);
+  }
+  100% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
+}
+</style>

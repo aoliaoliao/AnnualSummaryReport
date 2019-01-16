@@ -5,19 +5,24 @@
       <swiper-slide>
         <home-page></home-page>
       </swiper-slide>
-      <swiper-slide v-for="com in items" :key="com">
+      <swiper-slide v-for="com in activeComponents" :key="com">
         <keep-alive>
           <component :is="com"></component>
         </keep-alive>
       </swiper-slide>
+      <swiper-slide v-if="activeComponents.length !== 0 ">
+        <final-item></final-item>
+      </swiper-slide>
     </swiper>
     <lc-arrow v-show="isShowArrow"></lc-arrow>
+    <none-dialog v-model="showDialog"></none-dialog>
   </div>
 </template>
 
 <script>
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
+import NoneDialog from './NoneDialog'
 import ContentWrap from './ContentWrap'
 import LcArrow from './LcArrow'
 import HomePage from './HomePage'
@@ -46,10 +51,11 @@ export default {
         on: {
           slideChange: self.swiperSlideChange,
         },
-
       },
-      items: [ 'FirstTreat', 'Patient', 'Consultation', 'Work', 'Bbs', 'Train', 'FinalItem' ],
+      items: [ 'FirstTreat', 'Patient', 'Consultation', 'Work', 'Bbs', 'Train' ],
+      hiddenComponents: [],
       swiper: {},
+      showDialog: false
     }
   },
   computed: {
@@ -58,8 +64,16 @@ export default {
     },
     isShowArrow() {
       const activeIndex = this.swiper.activeIndex
-      return activeIndex > 0 && activeIndex < 7
+      return activeIndex > 0 && activeIndex <= this.activeComponents.length
+    },
+    activeComponents() {
+      return this.items.filter( ( v, index ) => this.hiddenComponents.indexOf( index ) === -1 )
     }
+  },
+  created() {
+    EventBus.$on( 'hidden', ( index ) => {
+      this.hiddenComponents.push( index )
+    } )
   },
   mounted() {
     this.swiper = this.$refs.mySwiper.swiper
@@ -67,12 +81,16 @@ export default {
   },
   methods: {
     showReport() {
-      this.swiper.slideNext( 800 );
+      if ( this.activeComponents.length >= 0 ) {
+        this.showDialog = true
+      } else {
+        this.swiper.slideNext( 800 );
+      }
     },
     swiperSlideChange( event ) {
       if ( this.activeIndex === 1 ) {
         this.swiper.allowSlidePrev = false
-      } else if ( this.activeIndex === this.items.length ) {
+      } else if ( this.activeIndex === this.activeComponents.length + 1 ) {
         this.swiper.allowSlideNext = false
       } else {
         this.swiper.allowSlidePrev = true
@@ -83,6 +101,7 @@ export default {
   components: {
     swiper,
     swiperSlide,
+    NoneDialog,
     LcArrow,
     ContentWrap,
     HomePage,
