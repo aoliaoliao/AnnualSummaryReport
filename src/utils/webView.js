@@ -1,7 +1,3 @@
-let androidBridge = null
-
-let iosBridge = null
-
 function osIsAndroid() {
   if ( navigator.userAgent.match( /(android|Android)/i ) ) {
     return true
@@ -22,14 +18,6 @@ function isInWeixin() {
   }
   return false
 }
-
-function isInEkyApp() {
-  if ( window.iosBridge || window.androidBridge ) {
-    return true
-  }
-  return false
-}
-
 
 function osIsPC() {
   let userAgentInfo = navigator.userAgent
@@ -53,45 +41,14 @@ function getHrefSearch() {
   return config
 }
 
-/**
- * 获取用户配置信息
- */
-function callGetUserData() {
-  return new Promise( ( resolve ) => {
-    function setUserConfig( conf ) {
-      if ( conf ) {
-        window.userConfig = JSON.parse( conf )
-      }
-      resolve()
-    }
-    window.userConfig = null
-    if ( osIsIOS() && iosBridge ) {
-      // getUserData 是 app端提供给js 调用的函数
-      iosBridge.callHandler( 'getUserData', ( userData ) => {
-        setUserConfig( userData )
-      } )
-    } else if ( osIsAndroid() && androidBridge && androidBridge.getUserData ) {
-      // getUserData 是 app端提供给js 调用的函数
-      let userData = androidBridge.getUserData()
-      setUserConfig( userData )
-    } else if ( isInWeixin() ) {
-      let userData = getHrefSearch()
-      setUserConfig( userData )
-    } else {
-      setUserConfig()
-    }
-  } )
-
-}
-
 
 /**
  * Android配置函数
  */
 function setAndroidWebViewJavascriptBridge( callback ) {
   if ( window.jsbridge ) {
-    androidBridge = window.jsbridge
-    window.androidBridge = androidBridge
+    callback( window.jsbridge )
+  } else {
     callback()
   }
 }
@@ -118,40 +75,41 @@ function setupWebViewJavascriptBridge( callback ) {
   }, 0 )
 }
 
-/**
- *  app  需要调用的js函数(示例)
- * @param val
- * @param price
- */
-function callJsFunction() {
-
-}
-
 
 function getUserInfo() {
 
   return new Promise( ( resolve, reject ) => {
-    function validate() {
-      if ( window.userConfig ) {
-        resolve( window.userConfig )
-      } else {
-        reject( '' )
-      }
+    let userData = getHrefSearch()
+    if ( userData.token ) {
+      resolve( userData.token )
+    } else {
+      reject()
     }
+  } )
+}
+
+function isInEkyApp() {
+  return new Promise( ( resolve, reject ) => {
     if ( osIsAndroid() ) {
-      setAndroidWebViewJavascriptBridge( () => {
-        callGetUserData().then( validate )
+      setAndroidWebViewJavascriptBridge( ( bridge ) => {
+        if ( bridge ) {
+          window.androidBridge = bridge
+          resolve()
+        } else {
+          reject()
+        }
       } )
     } else if ( osIsIOS() ) {
       setupWebViewJavascriptBridge( ( bridge ) => {
-        iosBridge = bridge
-        window.iosBridge = iosBridge
-        // app需要的调用js函数需要在此注册（only for iOS）
-        bridge.registerHandler( 'callJsFunction', callJsFunction )
-        callGetUserData().then( validate )
+        if ( bridge ) {
+          window.iosBridge = bridge
+          resolve()
+        } else {
+          reject()
+        }
       } )
     } else {
-      callGetUserData().then( validate )
+      reject()
     }
   } )
 }

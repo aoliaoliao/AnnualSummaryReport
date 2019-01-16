@@ -10,6 +10,9 @@
         <div></div>
       </div>
     </div>
+    <!-- <div style="position:absolute;top:0;left:0;width:100%;overflow:auto;z-index:999;">
+      {{msg}}
+    </div> -->
   </div>
 </template>
 
@@ -34,11 +37,12 @@ export default {
     ContentList
   },
   created() {
-
+    this.msg = window.location || 'none something'
   },
   mounted() {
-    getUserInfo().then( res => {
-      this.getData( res.token )
+    getUserInfo().then( token => {
+      this.getData( token )
+
     } ).catch( err => {
       this.getData()
     } )
@@ -48,7 +52,8 @@ export default {
     getData( token ) {
       this.isLoading = true
       ajax( 'https://git.lctest.cn:8001/api/admin2/doctor/user/stat', {
-        token: 'awpB/zbFiCA2DYLzxRwQbz50pnhgW7koz2ae6vJJ/W+G8JadjlKhZf/kDhNP0U91'
+        // token: 'awpB/zbFiCA2DYLzxRwQbz50pnhgW7koz2ae6vJJ/W+G8JadjlKhZf/kDhNP0U91'
+        token
       } ).then( res => {
         this.isLoading = false
         this.$nextTick( () => {
@@ -65,7 +70,9 @@ export default {
       } ).catch( err => {
         // 获取数据错误
         this.isLoading = false
-        console.log( '获取数据错误', err )
+        this.$nextTick( () => {
+          EventBus.$emit( 'hidden', 0, 1, 2, 3, 4, 5 )
+        } )
       } )
     },
     formatUser( res ) {

@@ -71,8 +71,11 @@ export default {
     }
   },
   created() {
-    EventBus.$on( 'hidden', ( index ) => {
-      this.hiddenComponents.push( index )
+    EventBus.$on( 'hidden', ( ...rest ) => {
+      for ( const index of rest ) {
+        this.hiddenComponents.push( index )
+      }
+
     } )
   },
   mounted() {
@@ -81,7 +84,7 @@ export default {
   },
   methods: {
     showReport() {
-      if ( this.activeComponents.length >= 0 ) {
+      if ( this.activeComponents.length == 0 ) {
         this.showDialog = true
       } else {
         this.swiper.slideNext( 800 );

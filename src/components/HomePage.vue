@@ -23,7 +23,12 @@ export default {
     AHomePage
   },
   mounted() {
-    this.isInAPP = isInEkyApp()
+    // this.isInAPP = isInEkyApp()
+    isInEkyApp().then( () => {
+      this.isInAPP = true
+    } ).catch( () => {
+      this.isInAPP = false
+    } )
   },
   methods: {
   }

@@ -21,9 +21,6 @@
         </template>
       </div>
     </content-wrap>
-    <!-- <div style="position:absolute;bottom:0;left:0;width:100%;overflow:auto;z-index:999;">
-      分享我的报告
-    </div> -->
     <div class="home-btn" @click="shareReport" v-if="isInAPP">
       <span>分享我的报告</span>
     </div>
@@ -47,7 +44,12 @@ export default {
     ContentWrap
   },
   mounted() {
-    this.isInAPP = isInEkyApp()
+    // this.isInAPP = isInEkyApp()
+    isInEkyApp().then( () => {
+      this.isInAPP = true
+    } ).catch( () => {
+      this.isInAPP = false
+    } )
   },
   methods: {
     shareReport() {
