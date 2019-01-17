@@ -3,6 +3,9 @@
     <!-- <w-home-page></w-home-page> -->
     <a-home-page v-if="isInAPP"></a-home-page>
     <w-home-page v-else></w-home-page>
+    <!-- <div style="position:absolute;top:0;left:0;width:100%;overflow:auto;z-index:999;">
+      isInAPP： {{isInAPP}} : {{msg}}
+    </div> -->
   </div>
 </template>
 
@@ -14,8 +17,8 @@ import { isInEkyApp } from '@/utils/webView'
 export default {
   data() {
     return {
-      avatar: '/static/images/logo.png',
-      isInAPP: true
+      isInAPP: true,
+      // msg: window.jsbridge || 'WebViewJavascriptBridge'
     }
   },
   components: {
@@ -26,8 +29,10 @@ export default {
     // this.isInAPP = isInEkyApp()
     isInEkyApp().then( () => {
       this.isInAPP = true
+      // this.msg = 'in app'
     } ).catch( () => {
       this.isInAPP = false
+      // this.msg = 'not in app'
     } )
   },
   methods: {
@@ -39,7 +44,7 @@ export default {
 .home-page
   width 100%
   height 100%
-  background-image url('/static/images/homeBg.jpg')
+  background-image url('../static/images/homeBg.jpg')
   background-size cover
   text-align center
 </style>

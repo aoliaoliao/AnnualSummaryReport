@@ -1,10 +1,10 @@
 <template>
   <div class="footer">
     <div class="footer-img">
-      <img :src="logoImg">
+      <img src="../static/images/logo.png">
     </div>
     <div class="footer-slogn">
-      <div>＃门诊管理，连锁经营，品牌塑造，智能营销，e看牙更好＃</div>
+      <div>＃e看牙，是一种诊所工作方式＃</div>
     </div>
   </div>
 </template>
@@ -14,8 +14,7 @@ export default {
   name: 'lc-footer',
   data() {
     return {
-      logoImg: '/static/images/logo.png',
-      arrowImg: '/static/images/arrow.png'
+      logoImg: '../static/images/logo.png'
     }
   }
 }
@@ -43,9 +42,7 @@ export default {
     >div
       text-align right
       color #000
-      font-size 10px
+      font-size 12px
       font-weight bold
-      margin-right -32px
-      -webkit-transform scale(0.83)
 </style>
 

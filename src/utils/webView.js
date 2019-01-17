@@ -77,15 +77,8 @@ function setupWebViewJavascriptBridge( callback ) {
 
 
 function getUserInfo() {
-
-  return new Promise( ( resolve, reject ) => {
-    let userData = getHrefSearch()
-    if ( userData.token ) {
-      resolve( userData.token )
-    } else {
-      reject()
-    }
-  } )
+  let userData = getHrefSearch()
+  return userData.token
 }
 
 function isInEkyApp() {

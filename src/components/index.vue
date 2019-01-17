@@ -1,9 +1,9 @@
 <template>
   <div class="index">
-    <div v-if="!isLoading">
+    <div v-show="!isLoading">
       <content-list></content-list>
     </div>
-    <div class="loading-wrap" v-else>
+    <div class="loading-wrap" v-show="isLoading">
       <div class="ball-pulse-sync">
         <div></div>
         <div></div>
@@ -37,27 +37,37 @@ export default {
     ContentList
   },
   created() {
-    this.msg = window.location || 'none something'
+    // this.msg = window.location || 'nothing'
   },
   mounted() {
-    getUserInfo().then( token => {
-      this.getData( token )
+    const token = getUserInfo()
+    this.getData( token )
 
-    } ).catch( err => {
-      this.getData()
-    } )
     // this.getData()
   },
   methods: {
+    getApiBaseURL() {
+      var apiBaseUrl = document.location.protocol + "//" + document.location.hostname + ":8001";
+      if ( apiBaseUrl.indexOf( 'http://localhost' ) != -1 || apiBaseUrl.indexOf( '192.168.' ) != -1 )
+        apiBaseUrl = "https://git.lctest.cn:8001";
+      return apiBaseUrl;
+    },
     getData( token ) {
       this.isLoading = true
-      ajax( 'https://git.lctest.cn:8001/api/admin2/doctor/user/stat', {
+      let apiBaseUrl = this.getApiBaseURL()
+      let url = `${apiBaseUrl}/api/admin2/doctor/user/stat`
+
+      ajax( url, {
         // token: 'awpB/zbFiCA2DYLzxRwQbz50pnhgW7koz2ae6vJJ/W+G8JadjlKhZf/kDhNP0U91'
         token
       } ).then( res => {
         this.isLoading = false
         this.$nextTick( () => {
-          const { data = {} } = JSON.parse( res )
+          if ( !res ) {
+            EventBus.$emit( 'hidden', 0, 1, 2, 3, 4, 5 )
+            return
+          }
+          let { data = {} } = JSON.parse( res )
           this.formatUser( data )
           this.formatName( data )
           this.formatFirstTreat( data )

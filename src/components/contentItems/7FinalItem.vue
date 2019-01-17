@@ -16,7 +16,7 @@
           e看牙伴您继续前进
         </div>
         <template v-if="!isInAPP">
-          <div class="qrImg"><img :src="qrCode"></div>
+          <div class="qrImg"><img src="../../static/images/qrcode.png"></div>
           <div class="download-tip">下载e看牙App，查看我的报告</div>
         </template>
       </div>
@@ -36,7 +36,6 @@ export default {
     return {
       watchCount: 0,
       studyCount: 0,
-      qrCode: '/static/images/qrcode.png',
       isInAPP: true
     }
   },
@@ -56,7 +55,8 @@ export default {
       if ( window.androidBridge ) {
         window.androidBridge.shareTo()
       } else if ( window.iosBridge ) {
-        window.iosBridge.shareTo()
+        // window.iosBridge.shareTo()
+        window.iosBridge.callHandler( 'shareTo' )
       }
     }
   }
@@ -100,7 +100,7 @@ export default {
   margin 0 auto
   width 141px
   height 45px
-  background-image url('/static/images/btnBg.png')
+  background-image url('../../static/images/btnBg.png')
   background-size cover
   display flex
   align-items center

@@ -123,7 +123,8 @@ const webpackConfig = merge(baseWebpackConfig, {
         new AddAssetHtmlPlugin([{
             filepath: utils.dllPath('*.js'),
             hash: true,
-            publicPath: utils.assetsPath('/dll'),
+            publicPath: config.build.assetsPublicPath + utils.assetsPath('/dll'),
+            // publicPath: config.build.assetsPublicPath,
             outputPath: utils.assetsPath('/dll'),
             includeSourcemap: false
         }]),

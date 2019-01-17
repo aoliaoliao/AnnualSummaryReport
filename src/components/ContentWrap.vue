@@ -1,10 +1,10 @@
 <template>
   <div class="content-wrap">
     <div class="title">
-      <img :src="titleImg">
+      <img src="../static/images/title.png">
     </div>
     <div class="content-wrap-body" ref="wrapBody">
-      <img :src="contentImg">
+      <img src="../static/images/contentBg.png">
       <div class="content-item content-position">
         <div class="item-title title-font-normal">
           <span class="title-year">2018</span>
@@ -41,8 +41,6 @@ export default {
   },
   data() {
     return {
-      contentImg: '/static/images/contentBg.png',
-      titleImg: '/static/images/title.png',
       userName: ''
     }
   },
@@ -74,7 +72,7 @@ flex-layout()
   width 100%
   height 100%
   position relative
-  background-image url('/static/images/wrapBg.jpg')
+  background-image url('../static/images/wrapBg.jpg')
   background-size cover
   flex-layout()
 .title

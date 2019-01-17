@@ -1,7 +1,7 @@
 <template>
   <div class="lc-arrow">
     <div class="arrow-wrap">
-      <img :src="arrowImg">
+      <img src="../static/images/arrow.png">
     </div>
   </div>
 </template>
@@ -11,7 +11,7 @@ export default {
   name: 'lc-arrow',
   data() {
     return {
-      arrowImg: '/static/images/arrow.png'
+      arrowImg: '../static/images/arrow.png'
     }
   }
 }

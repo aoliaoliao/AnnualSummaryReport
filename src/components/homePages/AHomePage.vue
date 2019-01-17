@@ -1,6 +1,6 @@
 <template>
   <div class="a-home-page">
-    <img class="content-img" src="/static/images/app-home-content.png" />
+    <img class="content-img" src="../../static/images/app-home-content.png" />
     <div class="home-footer">
       <div class="home-btn" @click="viewReport">
         <span>查看我的报告</span>
@@ -23,7 +23,6 @@ export default {
   name: 'a-home-page',
   data() {
     return {
-      avatar: '/static/images/logo.png'
     }
   },
   created() {
@@ -59,7 +58,7 @@ export default {
   width 141px
   height 45px
   margin-bottom  10px
-  background-image url('/static/images/btnBg.png')
+  background-image url('../../static/images/btnBg.png')
   background-size cover
   display inline-flex
   align-items center
