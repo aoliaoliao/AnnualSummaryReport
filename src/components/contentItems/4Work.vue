@@ -1,6 +1,6 @@
 <template>
   <div class="work">
-    <content-wrap>
+    <content-wrap :night-bg="true">
       <div slot="title">
         有
         <span class="title-font-big">{{treatmentCompletedDays}}</span>
@@ -13,17 +13,17 @@
           天，晚上8点到凌晨5点间，
         </div>
         <div class="content-font-normal ">
-          TA还在e看牙处理工作；
+          {{personCode}}还在e看牙处理工作；
         </div>
         <template v-if="workLateDays > 0">
           <div class="content-font-big ">
             {{workLastDate}}
           </div>
           <div class="content-font-normal">
-            TA工作到很晚
+            {{personCode}}工作到很晚
           </div>
           <div class="content-font-normal">
-            <span class="content-font-big">{{workLastMinute}}</span>分，您还在{{workLastOperation}}
+            <span class="content-font-big">{{workLastMinute}}</span>分，{{personCode}}还在{{workLastOperation}}
           </div>
         </template>
 
@@ -38,6 +38,12 @@ import { EventBus } from '@/utils/data.js'
 import { formatMyDate } from '@/utils/tool.js'
 
 export default {
+  props: {
+    app: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       treatmentCompletedDays: 0,
@@ -62,6 +68,9 @@ export default {
       } else {
         return ''
       }
+    },
+    personCode() {
+      return this.app ? '您' : 'TA'
     }
   },
   components: {

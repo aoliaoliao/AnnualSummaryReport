@@ -1,5 +1,6 @@
 <template>
   <div class="a-home-page">
+
     <img class="content-img" src="../../static/images/app-home-content.png" />
     <div class="home-footer">
       <div class="home-btn" @click="viewReport">
@@ -7,9 +8,6 @@
       </div>
       <div class="home-footer-tips">
         点击“查看我的报告”将允许e看牙总结您的工作信息。
-      </div>
-      <div class="home-footer-tips">
-        独立部署的诊所，我们无法生成相关报告，请谅解。
       </div>
     </div>
 

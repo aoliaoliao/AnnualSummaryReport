@@ -4,7 +4,8 @@
       <img src="../static/images/title.png">
     </div>
     <div class="content-wrap-body" ref="wrapBody">
-      <img src="../static/images/contentBg.png">
+      <img v-if="nightBg" src="../static/images/nightBg.png" />
+      <img v-else src="../static/images/contentBg.png">
       <div class="content-item content-position">
         <div class="item-title title-font-normal">
           <span class="title-year">2018</span>
@@ -37,7 +38,11 @@ export default {
     showFooter: {
       type: Boolean,
       default: true
-    }
+    },
+    nightBg: {
+      type: Boolean,
+      default: false
+    },
   },
   data() {
     return {
@@ -117,9 +122,10 @@ flex-layout()
   background #ffffff
   margin 19px 0 0
 .content-footer
-  padding-bottom top_distance
-  position absolute
-  bottom 0
+  // padding-bottom top_distance
+  // position absolute
+  // bottom 0
   width 100%
+
 </style>
 

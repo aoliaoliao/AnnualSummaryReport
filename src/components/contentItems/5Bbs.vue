@@ -9,15 +9,18 @@
       <div class="bbs-content">
         <div class="content-font-normal">
           为
-          <span class="content-font-big">{{likeCount}}</span>个病历点赞
+          <span class="content-font-big">{{likeCount}}</span>
+          个病历点赞
         </div>
         <div class="content-font-normal ">
           关注了
-          <span class="content-font-big">{{followCount}}</span>位同行
+          <span class="content-font-big">{{followCount}}</span>
+          位同行
         </div>
         <div class="content-font-normal ">
           参与了
-          <span class="content-font-big">{{followCount}}</span>次评论互动
+          <span class="content-font-big">{{followCount}}</span>
+          次评论互动
         </div>
         <div class="content-font-normal ">
           每一次交流，都是灵感的花火

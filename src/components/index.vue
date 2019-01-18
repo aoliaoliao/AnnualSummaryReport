@@ -1,7 +1,7 @@
 <template>
   <div class="index">
     <div v-show="!isLoading">
-      <content-list></content-list>
+      <content-list :app="isInApp"></content-list>
     </div>
     <div class="loading-wrap" v-show="isLoading">
       <div class="ball-pulse-sync">
@@ -10,9 +10,7 @@
         <div></div>
       </div>
     </div>
-    <!-- <div style="position:absolute;top:0;left:0;width:100%;overflow:auto;z-index:999;">
-      {{msg}}
-    </div> -->
+
   </div>
 </template>
 
@@ -21,7 +19,7 @@ import ContentList from './ContentList'
 
 import { ajax } from '@/utils/http.js'
 import { formatMyDate } from '@/utils/tool.js'
-import { getUserInfo } from '@/utils/webView.js'
+import { getUserInfo, isInEkyApp } from '@/utils/webView.js'
 import { EventBus, originData } from '@/utils/data.js'
 // https://git.lctest.cn:8001/api/admin2/doctor/user/stat?token=awpB%2FzbFiCA2DYLzxRwQbz50pnhgW7koz2ae6vJJ%2FW%2BG8JadjlKhZf%2FkDhNP0U91
 
@@ -30,6 +28,7 @@ export default {
   data() {
     return {
       isLoading: true,
+      isInApp: false,
       msg: ''
     }
   },
@@ -38,6 +37,12 @@ export default {
   },
   created() {
     // this.msg = window.location || 'nothing'
+    isInEkyApp().then( res => {
+      this.isInApp = true
+    } ).catch( err => {
+      this.isInApp = false
+    } )
+
   },
   mounted() {
     const token = getUserInfo()
@@ -60,14 +65,14 @@ export default {
       ajax( url, {
         // token: 'awpB/zbFiCA2DYLzxRwQbz50pnhgW7koz2ae6vJJ/W+G8JadjlKhZf/kDhNP0U91'
         token
-      } ).then( res => {
+      } ).then( ( res = "{}" ) => {
         this.isLoading = false
         this.$nextTick( () => {
-          if ( !res ) {
+          let { data = {} } = JSON.parse( res )
+          if ( !data ) {
             EventBus.$emit( 'hidden', 0, 1, 2, 3, 4, 5 )
             return
           }
-          let { data = {} } = JSON.parse( res )
           this.formatUser( data )
           this.formatName( data )
           this.formatFirstTreat( data )
@@ -128,8 +133,8 @@ export default {
       } )
       EventBus.$emit( 'patient', {
         treatmentCompletedCount,
-        maleCount: 1,
-        femaleCount: Number( femaleCount / maleCount ).toFixed( 1 ),
+        maleCount,
+        femaleCount,
         patientAgeRanges: originData.saas.patientAgeRanges
       } )
     },

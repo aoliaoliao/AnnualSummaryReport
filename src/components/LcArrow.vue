@@ -39,9 +39,9 @@ export default {
     animation twink 2s infinite
 
 @keyframes twink {
-  0% { top: 0px ; opacity: 0.8 }
-  50% { top: -10px;  opacity: 0.5 }
-  100% { top: 0px;  opacity: 0.8}
+  0% { top: 0px ; opacity: 0.5 }
+  50% { top: -10px;  opacity: 0.8 }
+  100% { top: 0px;  opacity: 0.5}
 }
 
 @keyframes arrowShadow {

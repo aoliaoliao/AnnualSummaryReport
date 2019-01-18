@@ -5,9 +5,12 @@ html, body
 html, body, div
   margin 0
   padding 0
-  font-family SourceHanSansCN;
+  font-family PingFang-SC SourceHanSansCN ;
 
-color-1 = #95EDFF
+.english-font
+  font-family SFUIDisplay Roboto
+
+color-1 = #F9DE7F
 color-2 = #ffffff
 
 .title-font-normal
@@ -18,16 +21,19 @@ color-2 = #ffffff
   font-size 16px
   line-height 16px
   color color-1
+  @extend .english-font
 .content-font-normal
   font-size 15px
   color: color-2
-  font-weight: 300
+  // font-weight: 300
 .content-font-normal-color
   font-size 15px
   color: color-1
+  @extend .english-font
 .content-font-big
   font-size: 21px
   color: color-1
+  @extend .english-font
 
 
 [aspectratio]

@@ -3,7 +3,6 @@
     <!-- <img class=""> -->
     <div class="user-info">
       <div class="avatar"><img :src="avatar"></div>
-
       <span>{{name}}</span>
     </div>
     <div class="content-img">

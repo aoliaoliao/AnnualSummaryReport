@@ -1,17 +1,20 @@
 <template>
   <div class="content-list">
+    <!-- <div style="position:absolute;top:0;left:0;width:100%;overflow:auto;z-index:999;">
+      app : {{app}} : {{msg}}
+    </div> -->
     <swiper :options="swiperOption" ref="mySwiper">
       <!-- <home-page v-show="!isShow" @view="showReport"></home-page> -->
       <swiper-slide>
-        <home-page></home-page>
+        <home-page :app="app"></home-page>
       </swiper-slide>
       <swiper-slide v-for="com in activeComponents" :key="com">
         <keep-alive>
-          <component :is="com"></component>
+          <component :is="com" :app="app"></component>
         </keep-alive>
       </swiper-slide>
       <swiper-slide v-if="activeComponents.length !== 0 ">
-        <final-item></final-item>
+        <final-item :app="app"></final-item>
       </swiper-slide>
     </swiper>
     <lc-arrow v-show="isShowArrow"></lc-arrow>
@@ -37,6 +40,12 @@ import { EventBus } from '@/utils/data.js'
 
 export default {
   name: 'content-list',
+  props: {
+    app: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     const self = this
     return {
@@ -44,18 +53,22 @@ export default {
         notNextTick: true,
         direction: 'vertical',
         height: window.innerHeight,
-        allowSlidePrev: false,
-        allowSlideNext: true,
+        // allowSlidePrev: false,
+        // allowSlideNext: true,
         noSwiping: true,
         noSwipingClass: 'stop-swiping',
+        resistance: true,
+        resistanceRatio: 0,
         on: {
-          slideChange: self.swiperSlideChange,
+          // slideChange: self.swiperSlideChange,
         },
       },
       items: [ 'FirstTreat', 'Patient', 'Consultation', 'Work', 'Bbs', 'Train' ],
       hiddenComponents: [],
       swiper: {},
-      showDialog: false
+      showDialog: false,
+      hasHomePage: true
+      // msg: window.iosBridge || 'none bridge'
     }
   },
   computed: {
@@ -64,7 +77,8 @@ export default {
     },
     isShowArrow() {
       const activeIndex = this.swiper.activeIndex
-      return activeIndex > 0 && activeIndex <= this.activeComponents.length
+      return !this.hasHomePage && activeIndex >= 0 && activeIndex < this.activeComponents.length
+      // return !this.swiper.isEnd
     },
     activeComponents() {
       return this.items.filter( ( v, index ) => this.hiddenComponents.indexOf( index ) === -1 )
@@ -87,7 +101,12 @@ export default {
       if ( this.activeComponents.length == 0 ) {
         this.showDialog = true
       } else {
+        const self = this
         this.swiper.slideNext( 800 );
+        setTimeout( function () {
+          self.swiper.removeSlide( 0 );
+          self.hasHomePage = false
+        }, 800 )
       }
     },
     swiperSlideChange( event ) {

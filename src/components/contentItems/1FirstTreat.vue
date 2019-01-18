@@ -7,8 +7,8 @@
         工作
       </div>
       <div class="first-treat-content">
-        <div class="content-font-big time">{{firstTreatDate}}</div>
-        <div class="content-font-normal">是TA首次在e看牙接诊的时间</div>
+        <div class="content-font-big time ">{{firstTreatDate}}</div>
+        <div class="content-font-normal">是{{personCode}}首次在e看牙接诊的时间</div>
       </div>
     </content-wrap>
 
@@ -20,6 +20,12 @@ import ContentWrap from '../ContentWrap'
 import { EventBus } from '@/utils/data.js'
 
 export default {
+  props: {
+    app: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       clinics: [],
@@ -33,6 +39,9 @@ export default {
     clinicsName() {
       let name = this.clinics.join( '，' )
       return name
+    },
+    personCode() {
+      return this.app ? '您' : 'TA'
     }
   },
   mounted() {

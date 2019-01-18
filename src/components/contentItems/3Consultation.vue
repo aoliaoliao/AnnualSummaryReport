@@ -13,7 +13,7 @@
           小时
         </div>
         <div class="content-font-normal content-margin">
-          您擅长的项目有：
+          {{personCode}}擅长的项目有：
         </div>
         <template v-if="skilledItems.length > 0">
           <div class="content-font-normal" v-for="item in skilledItems" :key="item.name">
@@ -33,11 +33,22 @@ import ContentWrap from '../ContentWrap'
 import { EventBus } from '@/utils/data.js'
 
 export default {
+  props: {
+    app: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       patientCount: 0,
       workHours: 0,
       skilledItems: []
+    }
+  },
+  computed: {
+    personCode() {
+      return this.app ? '您' : 'TA'
     }
   },
   components: {

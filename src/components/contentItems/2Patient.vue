@@ -6,7 +6,7 @@
         <span class="title-font-big">{{treatmentCompletedCount}}</span>
         位患者带去健康笑容
       </div>
-      <div class="patient-content">
+      <div class="patient-content" v-if="isShowData">
         <div class="content-font-normal">
           男女比例
           <span class="content-font-big">{{maleCount}}：{{femaleCount}}</span>
@@ -14,6 +14,17 @@
         <div class="content-font-normal" v-for="item in patientAgeRanges" :key="item.desc">
           {{item.desc}}：
           <span class="content-font-normal-color">{{item.count}}</span>
+        </div>
+      </div>
+      <div class="patient-content" v-else>
+        <div class="content-font-normal">
+          2019年，
+        </div>
+        <div class="content-font-normal">
+          别忘记录入患者
+        </div>
+        <div class="content-font-normal">
+          性别和年龄信息哦
         </div>
       </div>
     </content-wrap>
@@ -43,6 +54,23 @@ export default {
       this.femaleCount = target.femaleCount
       this.patientAgeRanges = target.patientAgeRanges
     } );
+  },
+  computed: {
+    sexRatio() {
+      if ( this.maleCount === 0 || this.femaleCount === 0 ) {
+        return `${this.maleCount} : ${this.femaleCount}`
+      } else {
+        const ratio = ( this.femaleCount / this.maleCount ).foFixed( 1 )
+        return `1 : ${ratio}`
+      }
+    },
+    isShowData() {
+      if ( this.patientAgeRanges.some( v => v.count > 0 ) || ( this.femaleCount + this.maleCount ) > 0 ) {
+        return true
+      } else {
+        return false
+      }
+    }
   }
 }
 </script>
