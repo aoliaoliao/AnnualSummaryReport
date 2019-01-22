@@ -18,7 +18,7 @@
       </swiper-slide>
     </swiper>
     <lc-arrow v-show="isShowArrow"></lc-arrow>
-    <none-dialog v-model="showDialog"></none-dialog>
+    <none-dialog :app="app" v-model="showDialog"></none-dialog>
   </div>
 </template>
 
@@ -37,6 +37,7 @@ import Bbs from './contentItems/5Bbs'
 import Train from './contentItems/6Train'
 import FinalItem from './contentItems/7FinalItem'
 import { EventBus } from '@/utils/data.js'
+import { track } from '@/utils/http.js'
 
 export default {
   name: 'content-list',
@@ -108,6 +109,9 @@ export default {
           self.hasHomePage = false
         }, 800 )
       }
+      track( {
+        button_click: '查看报告'
+      } )
     },
     swiperSlideChange( event ) {
       if ( this.activeIndex === 1 ) {

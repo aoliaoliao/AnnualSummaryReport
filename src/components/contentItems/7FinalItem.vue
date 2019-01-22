@@ -30,6 +30,7 @@
 <script>
 import ContentWrap from '../ContentWrap'
 import { isInEkyApp } from '@/utils/webView'
+import { track } from '@/utils/http.js'
 
 export default {
   props: {
@@ -53,7 +54,7 @@ export default {
     shareReport() {
       const title = '我的e看牙年度总结报告 '
       const desc = 'e看牙，是一种诊所工作方式'
-      const path = 'https://pic3.zhimg.com/80/v2-5faa2ffcac1992a2663c8746abbde9ae_hd.jpg'
+      const path = 'https://linkedcare-app.oss-cn-hangzhou.aliyuncs.com/image-test/ares/public/image/2/f1c3f263590f6e2fd57b33d31abaf614'
       if ( window.androidBridge ) {
         window.androidBridge.shareTo( title, desc, path )
       } else if ( window.iosBridge ) {
@@ -64,6 +65,10 @@ export default {
           path
         } )
       }
+      track( {
+        button_click: '分享报告'
+      } )
+
     }
   }
 }

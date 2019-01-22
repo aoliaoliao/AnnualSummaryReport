@@ -23,7 +23,9 @@
             {{personCode}}工作到很晚
           </div>
           <div class="content-font-normal">
-            <span class="content-font-big">{{workLastMinute}}</span>分，{{personCode}}还在{{workLastOperation}}
+            <span class="content-font-big">{{workLastMinute}}</span>
+            分，{{personCode}}还在
+            <span class="content-font-normal-color">{{workLastOperation}}</span>
           </div>
         </template>
 

@@ -17,9 +17,9 @@
 <script>
 import ContentList from './ContentList'
 
-import { ajax } from '@/utils/http.js'
+import { ajax, getApiBaseURL, track } from '@/utils/http.js'
 import { formatMyDate } from '@/utils/tool.js'
-import { getUserInfo, isInEkyApp } from '@/utils/webView.js'
+import { getUserInfo, isInEkyApp, isInWeixin } from '@/utils/webView.js'
 import { EventBus, originData } from '@/utils/data.js'
 // https://git.lctest.cn:8001/api/admin2/doctor/user/stat?token=awpB%2FzbFiCA2DYLzxRwQbz50pnhgW7koz2ae6vJJ%2FW%2BG8JadjlKhZf%2FkDhNP0U91
 
@@ -39,8 +39,10 @@ export default {
     // this.msg = window.location || 'nothing'
     isInEkyApp().then( res => {
       this.isInApp = true
+      this.trackResource( true )
     } ).catch( err => {
       this.isInApp = false
+      this.trackResource( false )
     } )
 
   },
@@ -51,15 +53,9 @@ export default {
     // this.getData()
   },
   methods: {
-    getApiBaseURL() {
-      var apiBaseUrl = document.location.protocol + "//" + document.location.hostname + ":8001";
-      if ( apiBaseUrl.indexOf( 'http://localhost' ) != -1 || apiBaseUrl.indexOf( '192.168.' ) != -1 )
-        apiBaseUrl = "https://git.lctest.cn:8001";
-      return apiBaseUrl;
-    },
     getData( token ) {
       this.isLoading = true
-      let apiBaseUrl = this.getApiBaseURL()
+      let apiBaseUrl = getApiBaseURL()
       let url = `${apiBaseUrl}/api/admin2/doctor/user/stat`
 
       ajax( url, {
@@ -69,6 +65,7 @@ export default {
         this.isLoading = false
         this.$nextTick( () => {
           let { data = {} } = JSON.parse( res )
+          this.trackData( true )
           if ( !data ) {
             EventBus.$emit( 'hidden', 0, 1, 2, 3, 4, 5 )
             return
@@ -85,6 +82,7 @@ export default {
       } ).catch( err => {
         // 获取数据错误
         this.isLoading = false
+        this.trackData( false )
         this.$nextTick( () => {
           EventBus.$emit( 'hidden', 0, 1, 2, 3, 4, 5 )
         } )
@@ -197,6 +195,24 @@ export default {
     formatDate( date ) {
       if ( !date ) return ''
       return formatMyDate( date )
+    },
+    trackResource( isInApp ) {
+      let resource = ''
+      if ( isInApp ) {
+        resource = 'App'
+      } else if ( isInWeixin() ) {
+        resource = '微信'
+      } else {
+        resource = '其他'
+      }
+      track( {
+        resource
+      } )
+    },
+    trackData( successed ) {
+      track( {
+        is_successed: successed
+      } )
     }
   }
 }

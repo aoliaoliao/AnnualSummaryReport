@@ -3,7 +3,7 @@
     <div class="dialog-wrap">
       <div class="dialog-content">
         <div class="text-row">很遗憾</div>
-        <div class="text-row-margin">小e没有获取到您2018年的工作数据。</div>
+        <div class="text-row-margin">小e没有获取到{{personCode}}2018年的工作数据。</div>
         <div class="tips">
           <div class="quote quote_left"></div>
           <div>本报告仅面向有预约数据的e看牙医生角色哦</div>
@@ -24,6 +24,10 @@ export default {
     value: {
       type: Boolean,
       default: false
+    },
+    app: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -34,6 +38,9 @@ export default {
       set: function ( v ) {
         this.$emit( 'input', v )
       }
+    },
+    personCode() {
+      return this.app ? '您' : 'TA'
     }
   },
   methods: {
