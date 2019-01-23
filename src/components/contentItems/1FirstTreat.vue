@@ -2,10 +2,11 @@
   <div class="first-treat">
     <content-wrap>
       <div class="clinic-name" slot="title">
-        在
+        <span v-if="app">您</span>在
         <span class="title-font-big">{{clinicsName}}</span>
         工作
       </div>
+
       <div class="first-treat-content">
         <div class="content-font-big time ">{{firstTreatDate}}</div>
         <div class="content-font-normal">是{{personCode}}首次在e看牙接诊的时间</div>

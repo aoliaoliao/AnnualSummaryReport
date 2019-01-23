@@ -101,7 +101,8 @@ export default {
       const { saas = {} } = res
       const { name = '' } = saas
       EventBus.$emit( 'name', {
-        name
+        name,
+        app: this.isInApp
       } )
     },
     formatFirstTreat( res ) {

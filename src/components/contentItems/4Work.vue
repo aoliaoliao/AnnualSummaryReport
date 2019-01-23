@@ -2,7 +2,7 @@
   <div class="work">
     <content-wrap :night-bg="true">
       <div slot="title">
-        有
+        <span v-if="app">您</span>有
         <span class="title-font-big">{{treatmentCompletedDays}}</span>
         天在工作中度过
       </div>
@@ -66,7 +66,7 @@ export default {
     workLastMinute() {
       if ( this.workLastTime ) {
         const tmp = this.workLastTime.replace( /-/g, '/' )
-        return formatMyDate( tmp, 'mm' )
+        return formatMyDate( tmp, 'hh:mm' )
       } else {
         return ''
       }

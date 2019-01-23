@@ -2,7 +2,7 @@
   <div class="consultation">
     <content-wrap>
       <div slot="title">
-        总共接诊了
+        <span v-if="app">您</span>总共接诊了
         <span class="title-font-big">{{patientCount}}</span>
         次
       </div>

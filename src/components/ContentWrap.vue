@@ -10,7 +10,7 @@
         <div class="item-title title-font-normal">
           <span class="title-year">2018</span>
           <slot name="assist">
-            <span class="title-name">{{userName}}</span>
+            <span class="title-name" v-if="!app">{{userName}}</span>
           </slot>
           <slot name="title"></slot>
         </div>
@@ -21,7 +21,7 @@
         </div>
       </div>
     </div>
-    <div class="content-footer" v-if="showFooter">
+    <div class="content-footer">
       <lc-footer></lc-footer>
     </div>
 
@@ -35,10 +35,6 @@ import LcFooter from './LcFooter'
 export default {
   name: 'content-wrap',
   props: {
-    showFooter: {
-      type: Boolean,
-      default: true
-    },
     nightBg: {
       type: Boolean,
       default: false
@@ -46,7 +42,8 @@ export default {
   },
   data() {
     return {
-      userName: ''
+      userName: '',
+      app: true
     }
   },
   components: {
@@ -55,6 +52,7 @@ export default {
   created() {
     EventBus.$on( 'name', target => {
       this.userName = target.name
+      this.app = target.app
     } );
   },
   methods: {

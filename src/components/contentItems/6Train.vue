@@ -2,7 +2,7 @@
   <div class="train">
     <content-wrap>
       <div slot="title">
-        参与了
+        <span v-if="app">您</span>参与了
         <span class="title-font-big">{{studyCount}}</span>
         次学习课程
       </div>
@@ -30,6 +30,12 @@ import ContentWrap from '../ContentWrap'
 import { EventBus } from '@/utils/data.js'
 
 export default {
+  props: {
+    app: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       watchCount: 0,

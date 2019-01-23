@@ -2,7 +2,7 @@
   <div class="patient">
     <content-wrap>
       <div slot="title">
-        为
+        <span v-if="app">您</span>为
         <span class="title-font-big">{{treatmentCompletedCount}}</span>
         位患者带去健康笑容
       </div>
@@ -36,6 +36,12 @@ import ContentWrap from '../ContentWrap'
 import { EventBus } from '@/utils/data.js'
 
 export default {
+  props: {
+    app: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       treatmentCompletedCount: 0,
@@ -78,9 +84,9 @@ export default {
 <style lang="stylus" scoped>
 .patient
   .patient-content
-    margin-top 23px
+    margin-top 10px
     >div
-      margin-bottom 8px
+      margin-bottom 5px
 
 </style>
 

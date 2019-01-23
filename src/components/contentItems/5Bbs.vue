@@ -2,7 +2,7 @@
   <div class="bbs">
     <content-wrap>
       <div slot="title">
-        在社区分享了
+        <span v-if="app">您</span>在社区分享了
         <span class="title-font-big">{{caseCount}}</span>
         次病历
       </div>
@@ -35,6 +35,12 @@ import ContentWrap from '../ContentWrap'
 import { EventBus } from '@/utils/data.js'
 
 export default {
+  props: {
+    app: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       likeCount: 0,
