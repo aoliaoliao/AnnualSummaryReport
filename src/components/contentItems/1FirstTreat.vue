@@ -65,5 +65,6 @@ export default {
   .clinic-name
     text-align center
     margin 0 10px
+    line-height 32px
 </style>
 

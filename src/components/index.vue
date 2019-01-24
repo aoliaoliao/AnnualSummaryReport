@@ -90,18 +90,18 @@ export default {
     },
     formatUser( res ) {
       const { user = {}, saas = {} } = res
-      const { avatar = '', gender } = user
+      const { avatar = '', nickName = '', gender } = user
       EventBus.$emit( 'user', {
         avatar,
         gender,
-        name: saas.name || ''
+        name: nickName
       } )
     },
     formatName( res ) {
-      const { saas = {} } = res
-      const { name = '' } = saas
+      const { user = {} } = res
+      const { nickName = '' } = user
       EventBus.$emit( 'name', {
-        name,
+        name: nickName,
         app: this.isInApp
       } )
     },
@@ -169,12 +169,12 @@ export default {
       } )
     },
     formatBbs( res ) {
-      const { bbs = {} } = res
+      let { bbs = {} } = res
 
-      if ( Object.keys( bbs ) === 0 || Object.values( bbs ).every( v => v === 0 ) ) {
-        EventBus.$emit( 'hidden', 4 )
-        return
-      }
+      // if ( Object.keys( bbs ) === 0 || Object.values( bbs ).every( v => v === 0 ) ) {
+      //   EventBus.$emit( 'hidden', 4 )
+      //   return
+      // }
 
       EventBus.$emit( 'bbs', {
         ...originData.bbs,
@@ -182,12 +182,12 @@ export default {
       } )
     },
     formatTrain( res ) {
-      const { train = {} } = res
+      let { train = {} } = res
 
-      if ( Object.keys( train ) === 0 || Object.values( train ).every( v => v === 0 ) ) {
-        EventBus.$emit( 'hidden', 5 )
-        return
-      }
+      // if ( Object.keys( train ) === 0 || Object.values( train ).every( v => v === 0 ) ) {
+      //   EventBus.$emit( 'hidden', 5 )
+      //   return
+      // }
       EventBus.$emit( 'train', {
         ...originData.train,
         ...train

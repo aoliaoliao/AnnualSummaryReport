@@ -16,7 +16,7 @@
           {{personCode}}擅长的项目有：
         </div>
         <template v-if="skilledItems.length > 0">
-          <div class="content-font-normal" v-for="item in skilledItems" :key="item.name">
+          <div class="content-dynamic-font-color" v-for="item in skilledItems" :key="item.name">
             {{item.name}}（{{item.count}}）
           </div>
         </template>

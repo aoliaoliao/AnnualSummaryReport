@@ -51,71 +51,71 @@ import Vue from 'vue'
 
 export const originData = {
   bbs: {
-    likeCount: 76,
-    commentCount: 215,
-    followCount: 12,
-    caseCount: 62
+    likeCount: 0,
+    commentCount: 0,
+    followCount: 0,
+    caseCount: 0
   },
   train: {
-    watchCount: 7,
-    studyCount: 10
+    watchCount: 0,
+    studyCount: 0
   },
   saas: {
-    patientCount: 485,
-    femaleCount: 237,
-    maleCount: 248,
-    treatmentCompletedCount: 1125,
-    treatmentCompletedDays: 286,
-    workHours: 557,
-    workLateDays: 41,
+    patientCount: 0,
+    femaleCount: 0,
+    maleCount: 0,
+    treatmentCompletedCount: 0,
+    treatmentCompletedDays: 0,
+    workHours: 0,
+    workLateDays: 0,
     skilledItems: [ {
       name: '牙体',
-      count: 256
+      count: 0
     }, {
       name: '定期复诊',
-      count: 23
+      count: 0
     }, {
       name: '口外',
-      count: 10
+      count: 0
     }, {
       name: '口腔检查',
-      count: 9
+      count: 0
     }, {
       name: '修复',
-      count: 5
+      count: 0
     } ],
     patientAgeRanges: [ {
       desc: '0-12岁患者数',
       min: 0,
       max: 12,
-      count: 303
+      count: 0
     }, {
       desc: '13-17岁患者数',
       min: 13,
       max: 17,
-      count: 13
+      count: 0
     }, {
       desc: '18-40岁患者数',
       min: 18,
       max: 40,
-      count: 87
+      count: 0
     }, {
       desc: '41-65岁患者数',
       min: 41,
       max: 65,
-      count: 72
+      count: 0
     }, {
       desc: '66岁以上患者数',
       min: 66,
       max: null,
-      count: 10
+      count: 0
     } ],
-    clinic: '潼关小白兔',
-    name: '姚欣',
-    firstTreatDate: '2018-01-14T02:30:00.000Z',
-    workLastTime: '2018-08-17T16:17:49.000Z',
-    workLastItem: '病历',
-    workLastOperation: '更新病历'
+    clinic: '',
+    name: '',
+    firstTreatDate: '',
+    workLastTime: '',
+    workLastItem: '',
+    workLastOperation: ''
   }
 }
 

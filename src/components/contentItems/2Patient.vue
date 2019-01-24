@@ -9,7 +9,7 @@
       <div class="patient-content" v-if="isShowData">
         <div class="content-font-normal">
           男女比例
-          <span class="content-font-big">{{maleCount}}：{{femaleCount}}</span>
+          <span class="content-font-big">{{sexRatio}}</span>
         </div>
         <div class="content-font-normal" v-for="item in patientAgeRanges" :key="item.desc">
           {{item.desc}}：
@@ -66,7 +66,7 @@ export default {
       if ( this.maleCount === 0 || this.femaleCount === 0 ) {
         return `${this.maleCount} : ${this.femaleCount}`
       } else {
-        const ratio = ( this.femaleCount / this.maleCount ).foFixed( 1 )
+        const ratio = Number( this.femaleCount / this.maleCount ).toFixed( 1 )
         return `1 : ${ratio}`
       }
     },

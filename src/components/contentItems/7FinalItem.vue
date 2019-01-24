@@ -1,6 +1,6 @@
 <template>
   <div class="final-item" :class="{'a_final-item': app , 'w_final-item': !app}">
-    <content-wrap>
+    <content-wrap :show-footer="false">
       <div slot="assist">
         <div class="assist-text" slot="assist">
           <span>和辛勤的自己</span>

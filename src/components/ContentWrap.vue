@@ -21,7 +21,7 @@
         </div>
       </div>
     </div>
-    <div class="content-footer">
+    <div class="content-footer" v-if="!notExist">
       <lc-footer></lc-footer>
     </div>
 
@@ -35,6 +35,10 @@ import LcFooter from './LcFooter'
 export default {
   name: 'content-wrap',
   props: {
+    showFooter: {
+      type: Boolean,
+      default: true
+    },
     nightBg: {
       type: Boolean,
       default: false
@@ -44,6 +48,11 @@ export default {
     return {
       userName: '',
       app: true
+    }
+  },
+  computed: {
+    notExist() {
+      return this.app && !this.showFooter
     }
   },
   components: {
